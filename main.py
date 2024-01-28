@@ -1,12 +1,13 @@
+import cv2
 from flask import Flask
 from flask_restful import Resource, Api
-import cv2
 
 app = Flask(__name__)
 api = Api(app)
 
 hog = cv2.HOGDescriptor()
 hog.setSVMDetector(cv2.HOGDescriptor_getDefaultPeopleDetector())
+
 
 class PeopleCounter(Resource):
     def get(self):
