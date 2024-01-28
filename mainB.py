@@ -22,7 +22,9 @@ class PeopleCounter(Resource):
 class PeopleCounter_URL(Resource):
     def get(self):
         # Przeczytaj parametr 'url' z zapytania
-        image_url = 'https://rzeszow-news.pl/wp-content/uploads/sites/1/nggallery/prezentacja-dworzec-pks-pazdziernik-2021/pks-03-wiz-1920x1080.jpg'
+        image_url = \
+            ('https://rzeszow-news.pl/wp-content/uploads/sites/1/nggallery/prezentacja-dworzec-pks-pazdziernik-2021/'
+             'pks-03-wiz-1920x1080.jpg')
 
         response = requests.get(image_url, stream=True)
         response.raise_for_status()
