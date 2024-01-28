@@ -31,9 +31,9 @@ class PeopleCounter_URL(Resource):
         response.raise_for_status()
 
         img_array = np.asarray(bytearray(response.content), dtype=np.uint8)
-        img = cv2.imdecode(img_array, cv2.IMREAD_COLOR)
+        image_url = cv2.imdecode(img_array, cv2.IMREAD_COLOR)
 
-        boxes, weights = hog.detectMultiScale(img, winStride=(8, 8))
+        boxes, weights = hog.detectMultiScale(image_url, winStride=(8, 8))
 
         return {'count': len(boxes)}
 
