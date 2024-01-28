@@ -21,19 +21,18 @@ class PeopleCounter(Resource):
 
 class PeopleCounter_URL(Resource):
     def get(self):
-        # Przeczytaj parametr 'url' z zapytania
         image_url = \
-            ('https://rzeszow-news.pl/wp-content/uploads/sites/1/nggallery/prezentacja-dworzec-pks-pazdziernik-2021/'
+            ('https://rzeszow-news.pl/wp-content/uploads/'
+             'sites/1/nggallery/'
+             'prezentacja-dworzec-pks-pazdziernik-2021/'
              'pks-03-wiz-1920x1080.jpg')
 
         response = requests.get(image_url, stream=True)
         response.raise_for_status()
 
-        # Wprowadź dodatkową obsługę kontentu obrazu
         img_array = np.asarray(bytearray(response.content), dtype=np.uint8)
         img = cv2.imdecode(img_array, cv2.IMREAD_COLOR)
 
-        # Użyj algorytmu do detekcji osób na obrazie
         boxes, weights = hog.detectMultiScale(img, winStride=(8, 8))
 
         return {'count': len(boxes)}
