@@ -20,21 +20,17 @@ class PeopleCounter(Resource):
 
 
 class PeopleCounter_URL(Resource):
-    def get(self):
-        image_url = \
-            ('https://rzeszow-news.pl/wp-content/uploads/'
-             'sites/1/nggallery/'
-             'prezentacja-dworzec-pks-pazdziernik-2021/'
-             'pks-03-wiz-1920x1080.jpg')
+    def get(self, image_url):
+        if not image_url:
+            return {'error': 'Missing image URL parameter'}, 400
 
         response = requests.get(image_url, stream=True)
         response.raise_for_status()
 
         img_array = np.asarray(bytearray(response.content), dtype=np.uint8)
-        image_url = cv2.imdecode(img_array, cv2.IMREAD_COLOR)
+        image = cv2.imdecode(img_array, cv2.IMREAD_COLOR)
 
-        boxes, weights = hog.detectMultiScale(image_url, winStride=(8, 8))
-
+        boxes, weights = hog.detectMultiScale(image, winStride=(8, 8))
         return {'count': len(boxes)}
 
 
@@ -43,7 +39,7 @@ class HelloWorld(Resource):
         return {'hello': 'world'}
 
 
-api.add_resource(PeopleCounter_URL, '/b')
+api.add_resource(PeopleCounter_URL, '/b/<path:image_url>')
 api.add_resource(PeopleCounter, '/')
 api.add_resource(HelloWorld, '/test')
 
